@@ -2,11 +2,23 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:local="clr-namespace:Hungry"
-             x:Class="Hungry.MainPage">
+             x:Class="Hungry.MainPage"
+             Padding="10">
     <Grid>
-        <Label Text="Swipe to Skip" 
-           VerticalOptions="Center" />
-        
+        <Grid.RowDefinitions>
+            <RowDefinition Height="20"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="20"/>
+            <RowDefinition Height="20"/>
+            <RowDefinition Height="60"/>
+        </Grid.RowDefinitions>
+        <Label Grid.Row="0" Text="Swipe to Skip" 
+           HorizontalOptions="Center" />
+        <Image Grid.Row="1"
+            Source="https://s-media-cache-ak0.pinimg.com/originals/ff/1a/f0/ff1af0cd5f6ae09b5e81653ddc6ebcd0.jpg" Aspect="AspectFill"/>
+        <Label Grid.Row="2" Text="Placeholder"/>
+        <Label Grid.Row="3" Text="Placeholder"/>
+        <Button Grid.Row="4" Text="I want... HAMBURGER" BackgroundColor="#f00c0c" TextColor="White" BorderRadius="20"/>
     </Grid>
 	
 </ContentPage>
