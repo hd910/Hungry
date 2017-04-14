@@ -2,23 +2,48 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:local="clr-namespace:Hungry"
+             xmlns:ic="clr-namespace:ImageCircle.Forms.Plugin.Abstractions;assembly=ImageCircle.Forms.Plugin.Abstractions"
              x:Class="Hungry.MainPage"
              Padding="10">
-    <Grid>
+    <Grid RowSpacing="10">
         <Grid.RowDefinitions>
             <RowDefinition Height="20"/>
             <RowDefinition Height="*"/>
-            <RowDefinition Height="20"/>
-            <RowDefinition Height="20"/>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="40"/>
             <RowDefinition Height="60"/>
         </Grid.RowDefinitions>
         <Label Grid.Row="0" Text="Swipe to Skip" 
            HorizontalOptions="Center" />
         <Image Grid.Row="1"
             Source="https://s-media-cache-ak0.pinimg.com/originals/ff/1a/f0/ff1af0cd5f6ae09b5e81653ddc6ebcd0.jpg" Aspect="AspectFill"/>
-        <Label Grid.Row="2" Text="Placeholder"/>
-        <Label Grid.Row="3" Text="Placeholder"/>
-        <Button Grid.Row="4" Text="I want... HAMBURGER" BackgroundColor="#f00c0c" TextColor="White" BorderRadius="20"/>
+        <StackLayout Grid.Row="2" HorizontalOptions="Start" Orientation="Horizontal">
+            <ic:CircleImage
+                WidthRequest="50"
+                HeightRequest="50"
+                Aspect="AspectFill"
+                Source="https://s-media-cache-ak0.pinimg.com/originals/ff/1a/f0/ff1af0cd5f6ae09b5e81653ddc6ebcd0.jpg"/>
+            <ic:CircleImage
+                WidthRequest="50"
+                HeightRequest="50"
+                Aspect="AspectFill"
+                Source="http://lorempixel.com/output/food-q-c-80-80-7.jpg"
+                Opacity="0.3"/>
+            <ic:CircleImage
+                WidthRequest="50"
+                HeightRequest="50"
+                Aspect="AspectFill"
+                Source="http://lorempixel.com/output/food-q-c-80-80-6.jpg"
+                Opacity="0.3"/>
+            <ic:CircleImage
+                WidthRequest="50"
+                HeightRequest="50"
+                Aspect="AspectFill"
+                Source="http://lorempixel.com/output/food-q-c-80-80-5.jpg"
+                Opacity="0.3"/>
+        </StackLayout>
+        <Label Grid.Row="3" Text="Beef and Bacon Hamburger" FontSize="Medium"/>
+        <Button Grid.Row="4" Text="I want... HAMBURGER" BackgroundColor="#f00c0c" TextColor="White" BorderRadius="20" FontSize="Medium" />
     </Grid>
 	
 </ContentPage>
