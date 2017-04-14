@@ -1,0 +1,2 @@
+C:\Users\Hayde\Documents\GitHub\Hungry\Hungry\Hungry\Hungry.UWP\Hungry.UWP.csproj;x86
+C:\Users\Hayde\Documents\GitHub\Hungry\Hungry\Hungry\Hungry\Hungry.csproj;neutral
