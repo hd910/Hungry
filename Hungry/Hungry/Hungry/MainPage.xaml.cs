@@ -11,7 +11,7 @@ namespace Hungry
     public partial class MainPage : ContentPage
     {
         private Food[] foodList = new Food[10];
-        private string url = "";
+        private string url = "https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key={0}&tags={1}&safe_search=1&per_page={31}";
 
 
         public MainPage()

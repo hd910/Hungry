@@ -1,6 +1,9 @@
 ﻿{
   "dependencies": {
+    "Microsoft.Bcl.Build": "1.0.21",
+    "Microsoft.Net.Http": "2.2.29",
     "Microsoft.NETCore.UniversalWindowsPlatform": "5.2.2",
+    "Newtonsoft.Json": "10.0.2",
     "Xam.Plugins.Forms.ImageCircle": "1.8.1",
     "Xamarin.Forms": "2.3.4.224"
   },
