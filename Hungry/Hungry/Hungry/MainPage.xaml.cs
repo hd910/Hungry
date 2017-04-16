@@ -27,32 +27,36 @@ namespace Hungry
 
             var content = await _client.GetStringAsync(formattedurl);
 
-            var xdoc = XDocument.Parse(content);
-            foreach (var node in xdoc.Descendants("photos").Descendants("photo"))
+            if(content != null)
             {
-                var id = node.Attribute("id").Value;
-                var secretId = node.Attribute("secret").Value;
-                var farmId = node.Attribute("farm").Value;
-                var serverId = node.Attribute("server").Value;
+                var xdoc = XDocument.Parse(content);
+                foreach (var node in xdoc.Descendants("photos").Descendants("photo"))
+                {
+                    var id = node.Attribute("id").Value;
+                    var secretId = node.Attribute("secret").Value;
+                    var farmId = node.Attribute("farm").Value;
+                    var serverId = node.Attribute("server").Value;
 
-                var imageURL = string.Format("https://farm{0}.staticflickr.com/{1}/{2}_{3}_c.jpg", farmId, serverId, id, secretId);
+                    var imageURL = string.Format("https://farm{0}.staticflickr.com/{1}/{2}_{3}_z.jpg", farmId, serverId, id, secretId);
+                    var thumbImageURL = string.Format("https://farm{0}.staticflickr.com/{1}/{2}_{3}_s.jpg", farmId, serverId, id, secretId);
 
-                foodList.Add(new Food("This is a pizza", imageURL));
+                    foodList.Add(new Food("This is a pizza", imageURL, thumbImageURL));
+                }
+
+                loadPreviewIcons();
             }
-
-            loadPreviewIcons();
 
         }
 
         private void loadPreviewIcons()
         {
-            
+            mainImage.Source = foodList[0].uri;
             for(var i = 0; i < foodList.Count; i++)
             {
                 Food food = foodList[i];
                 if(food != null)
                 {
-                    string uri = foodList[i].uri;
+                    string uri = foodList[i].thumbnailUri;
                     var tempIcon = new CircleImage
                     {
                         HeightRequest = 50,
