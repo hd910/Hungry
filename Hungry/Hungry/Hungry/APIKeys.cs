@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace Hungry
 {
-    class Constant
+    class APIKeys
     {
-        public static string FLICKR_API_KEY { get { return "ADD API HERE"; } }
+        public static string FLICKR_API_KEY { get { return "ADD KEY"; } }
     }
 }
