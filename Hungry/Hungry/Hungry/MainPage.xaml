@@ -15,11 +15,18 @@
         </Grid.RowDefinitions>
         <Label Grid.Row="0" Text="Swipe to Skip" 
            HorizontalOptions="Center" />
-        <Image Grid.Row="1" x:Name="mainImage"
-            Source="https://s-media-cache-ak0.pinimg.com/originals/ff/1a/f0/ff1af0cd5f6ae09b5e81653ddc6ebcd0.jpg" Aspect="AspectFill"/>
+        <AbsoluteLayout Grid.Row="1">
+            <ActivityIndicator x:Name="mainImageLoading"
+                               AbsoluteLayout.LayoutBounds="0.5,0.5,1,0.2" AbsoluteLayout.LayoutFlags="All"/>
+            <Image x:Name="mainImage" Source="" Aspect="AspectFill" WidthRequest="320" HeightRequest="350"/>
+        </AbsoluteLayout>
         <StackLayout Grid.Row="2" HorizontalOptions="Start" Orientation="Horizontal" x:Name="previewImagesLayout"/>
-        <Label Grid.Row="3" Text="Beef and Bacon Hamburger" FontSize="Medium"/>
-        <Button Grid.Row="4" Text="I want... HAMBURGER" BackgroundColor="#f00c0c" TextColor="White" BorderRadius="20" FontSize="Medium" />
+        <StackLayout Grid.Row="3" HorizontalOptions="Start" Orientation="Horizontal">
+            <Label Grid.Row="3" x:Name="catagoryLabel" Text="Beef and Bacon Hamburger" FontSize="Medium"/>
+            <Button Text="Next" Clicked="NextFood"/>
+        </StackLayout>
+        
+        <Button Grid.Row="4" x:Name="mainButton" Text="I want... HAMBURGER" BackgroundColor="#f00c0c" TextColor="White" BorderRadius="20" FontSize="Medium" />
     </Grid>
 	
 </ContentPage>

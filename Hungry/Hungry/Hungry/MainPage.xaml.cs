@@ -12,18 +12,19 @@ namespace Hungry
         private List<Food> foodList = new List<Food>();
         private string url = "https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key={0}&text={1}&safe_search=1&per_page={2}&sort=relevance";
         private HttpClient _client = new HttpClient();
+        private int currentSelected = 0;
 
         public MainPage()
         {
             InitializeComponent();
 
-            loadImages();
+            loadImages("Pizza");
         }
 
-        private async void loadImages()
+        private async void loadImages(string foodType)
         {
 
-            var formattedurl = string.Format(url, APIKeys.FLICKR_API_KEY, "Pizza", "5");
+            var formattedurl = string.Format(url, APIKeys.FLICKR_API_KEY, foodType, "5");
 
             var content = await _client.GetStringAsync(formattedurl);
 
@@ -40,18 +41,24 @@ namespace Hungry
                     var imageURL = string.Format("https://farm{0}.staticflickr.com/{1}/{2}_{3}_z.jpg", farmId, serverId, id, secretId);
                     var thumbImageURL = string.Format("https://farm{0}.staticflickr.com/{1}/{2}_{3}_s.jpg", farmId, serverId, id, secretId);
 
-                    foodList.Add(new Food("This is a pizza", imageURL, thumbImageURL));
+                    foodList.Add(new Food(foodType, imageURL, thumbImageURL));
                 }
 
-                loadPreviewIcons();
+                loadFood(foodType);
             }
 
         }
 
-        private void loadPreviewIcons()
+        private void loadFood(string foodType)
         {
             mainImage.Source = foodList[0].uri;
-            for(var i = 0; i < foodList.Count; i++)
+            catagoryLabel.Text = foodList[0].description;
+            mainButton.Text = string.Format("I WANT... {0}", foodType.ToUpper());
+
+            mainImageLoading.SetBinding(ActivityIndicator.IsRunningProperty, "IsLoading");
+            mainImageLoading.BindingContext = mainImage;
+
+            for (var i = 0; i < foodList.Count; i++)
             {
                 Food food = foodList[i];
                 if(food != null)
@@ -62,14 +69,40 @@ namespace Hungry
                         HeightRequest = 50,
                         WidthRequest = 50,
                         Aspect = Aspect.AspectFill,
-                        Source = UriImageSource.FromUri(new Uri(uri))
+                        Source = UriImageSource.FromUri(new Uri(uri)),
+                        ClassId = i.ToString()
                     };
 
-                    //tempIcon.GestureRecognizers.Add(new TapGestureRecognizer(OnTap));
+                    var tapGestureRecognizer = new TapGestureRecognizer();
+                    tapGestureRecognizer.Tapped += (sender, e) =>
+                    {
+                        var s = (CircleImage)sender;
+                        int index = Int32.Parse(s.ClassId);
+
+                        if(index != currentSelected)
+                        {
+                            mainImage.Source = foodList[index].uri;
+                            currentSelected = index;
+
+                            mainImageLoading.SetBinding(ActivityIndicator.IsRunningProperty, "IsLoading");
+                            mainImageLoading.BindingContext = mainImage;
+                        }
+                    };
+                    tempIcon.GestureRecognizers.Add(tapGestureRecognizer);
+
                     previewImagesLayout.Children.Add(tempIcon);
                 }
                 
             }
+        }
+
+        private void NextFood(object sender, EventArgs e)
+        {
+            previewImagesLayout.Children.Clear();
+            foodList.Clear();
+            currentSelected = 0;
+            loadImages("Burger");
+            
         }
     }
 }
