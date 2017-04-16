@@ -13,3 +13,8 @@ C:\Users\Hayde\Documents\GitHub\Hungry\Hungry\Hungry\Hungry\obj\Debug\Hungry.Mai
 C:\Users\Hayde\Documents\GitHub\Hungry\Hungry\Hungry\Hungry\obj\Debug\Hungry.App.xaml.g.cs
 C:\Users\Hayde\Documents\GitHub\Hungry\Hungry\Hungry\Hungry\obj\Debug\Hungry.dll
 C:\Users\Hayde\Documents\GitHub\Hungry\Hungry\Hungry\Hungry\obj\Debug\Hungry.pdb
+C:\Users\Hayde\Documents\GitHub\Hungry\Hungry\Hungry\Hungry\bin\Debug\ImageCircle.Forms.Plugin.Abstractions.dll
+C:\Users\Hayde\Documents\GitHub\Hungry\Hungry\Hungry\Hungry\bin\Debug\ImageCircle.Forms.Plugin.Abstractions.pdb
+C:\Users\Hayde\Documents\GitHub\Hungry\Hungry\Hungry\Hungry\bin\Debug\ImageCircle.Forms.Plugin.Abstractions.xml
+C:\Users\Hayde\Documents\GitHub\Hungry\Hungry\Hungry\Hungry\obj\Debug\Hungry.dll.mdb
+C:\Users\Hayde\Documents\GitHub\Hungry\Hungry\Hungry\Hungry\bin\Debug\Hungry.dll.mdb

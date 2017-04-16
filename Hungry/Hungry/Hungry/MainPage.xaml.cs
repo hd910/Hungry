@@ -11,11 +11,14 @@ namespace Hungry
     public partial class MainPage : ContentPage
     {
         private Food[] foodList = new Food[10];
+        private string url = "";
+
+
         public MainPage()
         {
             InitializeComponent();
             constructFoodArray();
-            loadPreviewIcons();
+
         }
 
         private void constructFoodArray()
@@ -25,6 +28,7 @@ namespace Hungry
                 foodList[i] = new Food(string.Format("This is food {0}", i), 
                                 string.Format("http://lorempixel.com/output/food-q-c-80-80-{0}.jpg", (i+1)));
             }
+            loadPreviewIcons();
         }
 
         private void loadPreviewIcons()
