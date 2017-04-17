@@ -18,7 +18,7 @@
         <AbsoluteLayout Grid.Row="1">
             <ActivityIndicator x:Name="mainImageLoading"
                                AbsoluteLayout.LayoutBounds="0.5,0.5,1,0.2" AbsoluteLayout.LayoutFlags="All"/>
-            <Image x:Name="mainImage" Source="" Aspect="AspectFill" WidthRequest="320" HeightRequest="350"/>
+            <Image x:Name="mainImage" Source="" Aspect="AspectFill" AbsoluteLayout.LayoutBounds="0,0,1,1" AbsoluteLayout.LayoutFlags="All"/>
         </AbsoluteLayout>
         <StackLayout Grid.Row="2" HorizontalOptions="Start" Orientation="Horizontal" x:Name="previewImagesLayout"/>
         <StackLayout Grid.Row="3" HorizontalOptions="Start" Orientation="Horizontal">
