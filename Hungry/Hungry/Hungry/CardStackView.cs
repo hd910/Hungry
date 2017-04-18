@@ -32,7 +32,7 @@ namespace Hungry
             public string thumbnailUri { get; set; }
         }
 
-        string[] foodTypes = new string[3] { "Pizza", "Hamburger", "Sushi" };
+        string[] foodTypes = new string[6] { "Pizza", "Hamburger", "Sushi", "Pasta", "Bibimbap", "Kebab" };
 
         // back card scale
         const float BackCardScale = 0.8f;
@@ -193,7 +193,9 @@ namespace Hungry
                 
                 if (ItemsSource[itemIndex].foodImages != null)
 				    card.Photo.Source = ImageSource.FromUri(new Uri(ItemsSource[itemIndex].foodImages[0].fullSizeUri));
-				card.IsVisible = true;
+                card.searchFoodButton.Text = "I WANT..." + ItemsSource[itemIndex].Name;
+
+                card.IsVisible = true;
 				card.Scale = GetScale(i);
 				card.RotateTo (0, 0);
 				card.TranslateTo (0, - card.Y, 0);
@@ -349,10 +351,11 @@ namespace Hungry
                     topCard.previewImagesLayout.Children.Add(tempIcon);
                 }
 
-
-                //topCard.previewImagesLayout = 
                 if (ItemsSource[itemIndex].foodImages != null)
                     topCard.Photo.Source = ImageSource.FromUri(new Uri(ItemsSource[itemIndex].foodImages[0].fullSizeUri));
+
+                topCard.searchFoodButton.Text = "I WANT..." + ItemsSource[itemIndex].Name;
+
 
                 topCard.IsVisible = true;
                 itemIndex++;

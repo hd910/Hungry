@@ -9,6 +9,7 @@ namespace Hungry
 		public Image Photo { get; set;}
         public Image[] PreviewPhotos { get; set; }
         public StackLayout previewImagesLayout;
+        public Button searchFoodButton;
         public int previewNumber = 5;
 
         public CardView()
@@ -102,7 +103,7 @@ namespace Hungry
             grid.Children.Add(Name,0,2);
 
             //Button to find food places around
-            Button searchFoodButton = new Button
+            searchFoodButton = new Button
             {
                 Text = "I WANT... FOOD",
                 BackgroundColor = Color.FromHex("#f00c0c"),
