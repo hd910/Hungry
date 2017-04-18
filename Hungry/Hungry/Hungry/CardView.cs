@@ -68,6 +68,13 @@ namespace Hungry
 
             absoluteLayout.Children.Add(Photo, new Rectangle(0, 0, 1, 1), AbsoluteLayoutFlags.All);
 
+            ActivityIndicator loadingIcon = new ActivityIndicator();
+            loadingIcon.SetBinding(ActivityIndicator.IsRunningProperty, "IsLoading");
+            loadingIcon.BindingContext = Photo;
+            absoluteLayout.Children.Add(loadingIcon, new Rectangle(0.5, 0.5, 1, 0.2), AbsoluteLayoutFlags.All);
+
+
+
             grid.Children.Add(absoluteLayout, 0, 0);
 
             previewImagesLayout = new StackLayout
@@ -75,20 +82,6 @@ namespace Hungry
                 Orientation = StackOrientation.Horizontal,
                 HorizontalOptions = LayoutOptions.Start
             };
-
-            ////Preview pics
-            //for (var i = 0; i < previewNumber; i++)
-            //{
-            //    var tempIcon = new CircleImage
-            //    {
-            //        HeightRequest = 50,
-            //        WidthRequest = 50,
-            //        Aspect = Aspect.AspectFill,
-            //        ClassId = i.ToString()
-            //    };
-
-            //    previewImagesLayout.Children.Add(tempIcon);
-            //}
 
             grid.Children.Add(previewImagesLayout, 0, 1);
 

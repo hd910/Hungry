@@ -21,7 +21,7 @@ namespace Hungry
                 Constraint.Constant(10),
                 Constraint.Constant(10),
                 Constraint.RelativeToParent((parent) => {
-                    return parent.Width - 10;
+                    return parent.Width - 20;
                 }),
                 Constraint.RelativeToParent((parent) => {
                     return parent.Height - 10;

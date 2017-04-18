@@ -15,6 +15,7 @@ using System.Collections.Generic;
 using System.Xml.Linq;
 using System.Net.Http;
 using ImageCircle.Forms.Plugin.Abstractions;
+using System.Linq;
 
 namespace Hungry
 {
@@ -32,7 +33,7 @@ namespace Hungry
             public string thumbnailUri { get; set; }
         }
 
-        string[] foodTypes = new string[6] { "Pizza", "Hamburger", "Sushi", "Pasta", "Bibimbap", "Kebab" };
+        string[] foodTypes = new string[8] { "Pizza", "Hamburger", "Sushi", "Pasta", "Bibimbap", "Pho", "Udon Noodles", "Donkatsu" };
 
         // back card scale
         const float BackCardScale = 0.8f;
@@ -79,8 +80,10 @@ namespace Hungry
 		}
 
 		public CardStackView ()
-		{			
-			RelativeLayout view = new RelativeLayout ();
+		{
+            Random rnd = new Random();
+            foodTypes = foodTypes.OrderBy(x => rnd.Next()).ToArray();
+            RelativeLayout view = new RelativeLayout ();
 
 			// create a stack of cards
 			for (int i = 0; i < NumCards; i++) {
