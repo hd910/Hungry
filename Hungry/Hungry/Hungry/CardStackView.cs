@@ -179,14 +179,16 @@ namespace Hungry
                         };
 
                         var tapGestureRecognizer = new TapGestureRecognizer();
-                        tapGestureRecognizer.Tapped += (sender, e) =>
+                        tapGestureRecognizer.Tapped += async (sender, e) =>
                         {
                             var s = (CircleImage)sender;
                             string[] temp = s.ClassId.Split('_');
                             int orderIndex = Int32.Parse(temp[0]);
                             int previewIndex = Int32.Parse(temp[1]);
 
+                            await card.Photo.FadeTo(0, 250);
                             card.Photo.Source = ImageSource.FromUri(new Uri(ItemsSource[orderIndex].foodImages[previewIndex].fullSizeUri));
+                            await card.Photo.FadeTo(1, 250);
                         };
                         tempIcon.GestureRecognizers.Add(tapGestureRecognizer);
 
@@ -340,14 +342,16 @@ namespace Hungry
                     };
 
                     var tapGestureRecognizer = new TapGestureRecognizer();
-                    tapGestureRecognizer.Tapped += (sender, e) =>
+                    tapGestureRecognizer.Tapped += async (sender, e) =>
                     {
                         var s = (CircleImage)sender;
                         string[] temp = s.ClassId.Split('_');
                         int orderIndex = Int32.Parse(temp[0]);
                         int previewIndex = Int32.Parse(temp[1]);
 
+                        await topCard.Photo.FadeTo(0, 250);
                         topCard.Photo.Source = ImageSource.FromUri(new Uri(ItemsSource[orderIndex].foodImages[previewIndex].fullSizeUri));
+                        await topCard.Photo.FadeTo(1, 250);
                     };
                     tempIcon.GestureRecognizers.Add(tapGestureRecognizer);
 
