@@ -13,6 +13,10 @@ namespace Hungry
 
             RelativeLayout view = new RelativeLayout();
 
+            //ActivityIndicator loadingIcon = new ActivityIndicator();
+            //view.Children.Add(loadingIcon, widthConstraint: Constraint.RelativeToParent(parent => parent.Width),
+            //    heightConstraint: Constraint.RelativeToParent(parent => parent.Width));
+
             cardStack = new CardStackView();
             cardStack.SwipedLeft += SwipedLeft;
             cardStack.SwipedRight += SwipedRight;
@@ -30,7 +34,7 @@ namespace Hungry
 
             this.LayoutChanged += (object sender, EventArgs e) =>
             {
-                cardStack.CardMoveDistance = (int)(this.Width * 0.60f);
+                cardStack.CardMoveDistance = (int)(this.Width * 0.40f);
             };
 
             this.Content = view;

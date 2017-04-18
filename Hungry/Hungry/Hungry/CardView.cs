@@ -36,6 +36,11 @@ namespace Hungry
             Grid grid = new Grid {
                 RowSpacing = 10
             };
+            //Description
+            grid.RowDefinitions.Add(new RowDefinition
+            {
+                Height = new GridLength(30, GridUnitType.Absolute)
+            });
             //Main Image
             grid.RowDefinitions.Add(new RowDefinition
             {
@@ -46,11 +51,7 @@ namespace Hungry
             {
                 Height = new GridLength(1, GridUnitType.Auto)
             });
-            //Description
-            grid.RowDefinitions.Add(new RowDefinition
-            {
-                Height = new GridLength(40, GridUnitType.Absolute)
-            });
+            
             //Button
             grid.RowDefinitions.Add(new RowDefinition
             {
@@ -58,6 +59,18 @@ namespace Hungry
             });
 
             AbsoluteLayout absoluteLayout = new AbsoluteLayout();
+
+            //Food name
+            Name = new Label()
+            {
+                TextColor = Color.Black,
+                FontSize = 18,
+                InputTransparent = true,
+                HorizontalTextAlignment = TextAlignment.Center,
+                VerticalTextAlignment = TextAlignment.Center
+            };
+
+            grid.Children.Add(Name, 0, 0);
 
             //Main food image
             Photo = new Image()
@@ -75,7 +88,7 @@ namespace Hungry
 
 
 
-            grid.Children.Add(absoluteLayout, 0, 0);
+            grid.Children.Add(absoluteLayout, 0, 1);
 
             previewImagesLayout = new StackLayout
             {
@@ -83,17 +96,9 @@ namespace Hungry
                 HorizontalOptions = LayoutOptions.Start
             };
 
-            grid.Children.Add(previewImagesLayout, 0, 1);
+            grid.Children.Add(previewImagesLayout, 0, 2);
 
-            //Food name
-            Name = new Label()
-            {
-                TextColor = Color.Black,
-                FontSize = 22,
-                InputTransparent = true
-            };
-
-            grid.Children.Add(Name,0,2);
+            
 
             //Button to find food places around
             searchFoodButton = new Button

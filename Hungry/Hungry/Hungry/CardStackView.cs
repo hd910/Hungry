@@ -33,7 +33,7 @@ namespace Hungry
             public string thumbnailUri { get; set; }
         }
 
-        string[] foodTypes = new string[8] { "Pizza", "Hamburger", "Sushi", "Pasta", "Bibimbap", "Pho", "Udon Noodles", "Donkatsu" };
+        string[] foodTypes = new string[14] { "Pizza", "Hamburger", "Sushi", "Pasta", "Bibimbap", "Pho", "Udon Noodles", "Donkatsu", "Salad", "Sandwich", "Burrito", "Fried Rice", "Pad Thai", "Dumpling" };
 
         // back card scale
         const float BackCardScale = 0.8f;
@@ -106,11 +106,16 @@ namespace Hungry
 					})
 				);
 			}
+            //ActivityIndicator loadingIcon = new ActivityIndicator();
+            //view.Children.Add(loadingIcon, widthConstraint: Constraint.RelativeToParent(parent => parent.Width),
+            //    heightConstraint: Constraint.RelativeToParent(parent => parent.Width));
 
-			this.BackgroundColor = Color.White;
+            this.BackgroundColor = Color.White;
 			this.Content = view;
-			
-			var panGesture = new PanGestureRecognizer ();
+
+            
+
+            var panGesture = new PanGestureRecognizer ();
 			panGesture.PanUpdated += OnPanUpdated;
 			GestureRecognizers.Add (panGesture);
 
@@ -163,7 +168,7 @@ namespace Hungry
 			for (int i = 0; i < Math.Min(NumCards, ItemsSource.Count); i++)	{
 				if (itemIndex >= ItemsSource.Count) break;
 				var card = cards[i];
-				card.Name.Text = ItemsSource[itemIndex].Name;
+				card.Name.Text = "Hungry? How about " + ItemsSource[itemIndex].Name;
 
                 if(card.previewImagesLayout.Children.Count == 0)
                 {
@@ -198,7 +203,7 @@ namespace Hungry
                 
                 if (ItemsSource[itemIndex].foodImages != null)
 				    card.Photo.Source = ImageSource.FromUri(new Uri(ItemsSource[itemIndex].foodImages[0].fullSizeUri));
-                card.searchFoodButton.Text = "I WANT..." + ItemsSource[itemIndex].Name;
+                card.searchFoodButton.Text = "Find " + ItemsSource[itemIndex].Name;
 
                 card.IsVisible = true;
 				card.Scale = GetScale(i);
@@ -314,6 +319,11 @@ namespace Hungry
             var topCard = cards[topCardIndex];
             topCardIndex = NextCardIndex(topCardIndex);
 
+            if (itemIndex >= ItemsSource.Count)
+            {
+                itemIndex = 0;
+            }
+
             // if there are more cards to show, show the next card in to place of 
             // the card that was swipped off the screen
             if (itemIndex < ItemsSource.Count)
@@ -327,7 +337,7 @@ namespace Hungry
                 topCard.TranslateTo(0, -topCard.Y, 0);
 
                 // set the data
-                topCard.Name.Text = ItemsSource[itemIndex].Name;
+                topCard.Name.Text = "Hungry? How about.. " + ItemsSource[itemIndex].Name;
                 topCard.previewImagesLayout.Children.Clear();
 
                 for (var index = 0; index < PreviewNumber; index++)
@@ -361,7 +371,7 @@ namespace Hungry
                 if (ItemsSource[itemIndex].foodImages != null)
                     topCard.Photo.Source = ImageSource.FromUri(new Uri(ItemsSource[itemIndex].foodImages[0].fullSizeUri));
 
-                topCard.searchFoodButton.Text = "I WANT..." + ItemsSource[itemIndex].Name;
+                topCard.searchFoodButton.Text = "Find " + ItemsSource[itemIndex].Name;
 
 
                 topCard.IsVisible = true;
