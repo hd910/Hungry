@@ -17,7 +17,6 @@ namespace Hungry
             RelativeLayout view = new RelativeLayout();
 
             cardStack = new CardStackView();
-            cardStack.SetBinding(CardStackView.ItemsSourceProperty, "ItemsList");
             cardStack.SwipedLeft += SwipedLeft;
             cardStack.SwipedRight += SwipedRight;
 
