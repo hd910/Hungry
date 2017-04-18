@@ -19,15 +19,22 @@ namespace Hungry
 {
 	public class CardStackView : ContentView
 	{
-		public class Item
-		{
-			public string Name { get; set;}
-			public string Photo { get; set;}
-		};
-	
-	
-		// back card scale
-		const float BackCardScale = 0.8f;
+        public class Item
+        {
+            public string Name { get; set; }
+            public List<FoodImage> foodImages { get; set; }
+        }
+
+        public class FoodImage
+        {
+            public string fullSizeUri { get; set; }
+            public string thumbnailUri { get; set; }
+        }
+
+        string[] foodTypes = new string[3] { "Pizza", "Hamburger", "Sushi" };
+
+        // back card scale
+        const float BackCardScale = 0.8f;
 		// speed of the animations
 		const int AnimLength = 250;	
 			// 180 / pi
@@ -36,6 +43,8 @@ namespace Hungry
 		const float CardRotationAdjuster = 0.3f; 
 		// distance a card must be moved to consider to be swiped off
 		public int CardMoveDistance {get; set;}
+
+        const int PreviewNumber = 5;
 
 		// two cards
 		const int NumCards = 2;
@@ -66,11 +75,6 @@ namespace Hungry
                     Items = value;
                 }		
 			}
-		}
-		
-		private static void OnItemsSourcePropertyChanged(BindableObject bindable, object oldValue, object newValue)
-		{
-			((CardStackView)bindable).Setup();
 		}
 
 		public CardStackView ()
@@ -106,39 +110,45 @@ namespace Hungry
 			panGesture.PanUpdated += OnPanUpdated;
 			GestureRecognizers.Add (panGesture);
 
-            loadImages("Pizza");
+            loadImages();
 
         }
 
-        private async void loadImages(string foodType)
+        private async void loadImages()
         {
+            foreach(var foodType in foodTypes){
+                var formattedurl = string.Format(url, APIKeys.FLICKR_API_KEY, foodType, PreviewNumber);
 
-            var formattedurl = string.Format(url, APIKeys.FLICKR_API_KEY, foodType, "10");
+                var content = await _client.GetStringAsync(formattedurl);
 
-            var content = await _client.GetStringAsync(formattedurl);
-
-            if (content != null)
-            {
-                var xdoc = XDocument.Parse(content);
-                foreach (var node in xdoc.Descendants("photos").Descendants("photo"))
+                if (content != null)
                 {
-                    var id = node.Attribute("id").Value;
-                    var secretId = node.Attribute("secret").Value;
-                    var farmId = node.Attribute("farm").Value;
-                    var serverId = node.Attribute("server").Value;
+                    var xdoc = XDocument.Parse(content);
+                    List<FoodImage> tempImages = new List<FoodImage>();
+                    foreach (var node in xdoc.Descendants("photos").Descendants("photo"))
+                    {
+                        var id = node.Attribute("id").Value;
+                        var secretId = node.Attribute("secret").Value;
+                        var farmId = node.Attribute("farm").Value;
+                        var serverId = node.Attribute("server").Value;
 
-                    var imageURL = string.Format("https://farm{0}.staticflickr.com/{1}/{2}_{3}_z.jpg", farmId, serverId, id, secretId);
-                    var thumbImageURL = string.Format("https://farm{0}.staticflickr.com/{1}/{2}_{3}_s.jpg", farmId, serverId, id, secretId);
+                        var imageURL = string.Format("https://farm{0}.staticflickr.com/{1}/{2}_{3}_z.jpg", farmId, serverId, id, secretId);
+                        var thumbImageURL = string.Format("https://farm{0}.staticflickr.com/{1}/{2}_{3}_s.jpg", farmId, serverId, id, secretId);
 
+                        tempImages.Add(new FoodImage()
+                        {
+                            fullSizeUri = imageURL,
+                            thumbnailUri = thumbImageURL
+                        });
+                    }
                     Items.Add(new Item()
                     {
                         Name = foodType,
-                        Photo = imageURL
+                        foodImages = tempImages
                     });
-
                 }
-                Setup();
             }
+            Setup();
         }
 
         void Setup()
@@ -150,8 +160,8 @@ namespace Hungry
 				if (itemIndex >= ItemsSource.Count) break;
 				var card = cards[i];
 				card.Name.Text = ItemsSource[itemIndex].Name;
-                if(ItemsSource[itemIndex].Photo != "")
-				    card.Photo.Source = ImageSource.FromUri(new Uri(ItemsSource[itemIndex].Photo));
+                if(ItemsSource[itemIndex].foodImages != null)
+				    card.Photo.Source = ImageSource.FromUri(new Uri(ItemsSource[itemIndex].foodImages[0].fullSizeUri));
 				card.IsVisible = true;
 				card.Scale = GetScale(i);
 				card.RotateTo (0, 0);
@@ -278,8 +288,9 @@ namespace Hungry
 
 				// set the data
 				topCard.Name.Text = ItemsSource[itemIndex].Name;
-                if (ItemsSource[itemIndex].Photo != "")
-                    topCard.Photo.Source = ImageSource.FromUri(new Uri(ItemsSource[itemIndex].Photo));
+                //topCard.previewImagesLayout = 
+                if (ItemsSource[itemIndex].foodImages != null)
+                    topCard.Photo.Source = ImageSource.FromUri(new Uri(ItemsSource[itemIndex].foodImages[0].fullSizeUri));
 
 				topCard.IsVisible = true;
 				itemIndex++;

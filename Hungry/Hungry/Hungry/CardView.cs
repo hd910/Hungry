@@ -1,4 +1,5 @@
-﻿using Xamarin.Forms;
+﻿using ImageCircle.Forms.Plugin.Abstractions;
+using Xamarin.Forms;
 
 namespace Hungry
 {
@@ -7,27 +8,29 @@ namespace Hungry
 		public Label Name { get; set;}
 		public Image Photo { get; set;}
         public Image[] PreviewPhotos { get; set; }
+        public StackLayout previewImagesLayout;
+        public int previewNumber = 5;
 
-		public CardView ()
-		{
-			RelativeLayout view = new RelativeLayout {
+        public CardView()
+        {
+            RelativeLayout view = new RelativeLayout {
                 Padding = 10
             };
 
             //Background box
-			BoxView background = new BoxView {
-				Color = Color.FromHex("#FFFFFF"),
-				InputTransparent=true
-			};
-			view.Children.Add (background,
-				Constraint.Constant (0), Constraint.Constant (0),
-				Constraint.RelativeToParent ((parent) => {					
-					return parent.Width;
-				}),
-				Constraint.RelativeToParent ((parent) => {
-					return parent.Height;
-				})
-			);
+            BoxView background = new BoxView {
+                Color = Color.FromHex("#FFFFFF"),
+                InputTransparent = true
+            };
+            view.Children.Add(background,
+                Constraint.Constant(0), Constraint.Constant(0),
+                Constraint.RelativeToParent((parent) => {
+                    return parent.Width;
+                }),
+                Constraint.RelativeToParent((parent) => {
+                    return parent.Height;
+                })
+            );
 
             Grid grid = new Grid {
                 RowSpacing = 10
@@ -62,15 +65,29 @@ namespace Hungry
                 Aspect = Aspect.AspectFill
             };
 
-            absoluteLayout.Children.Add(Photo, new Rectangle(0,0,1,1), AbsoluteLayoutFlags.All);
+            absoluteLayout.Children.Add(Photo, new Rectangle(0, 0, 1, 1), AbsoluteLayoutFlags.All);
 
             grid.Children.Add(absoluteLayout, 0, 0);
 
-            StackLayout previewImagesLayout = new StackLayout
+            previewImagesLayout = new StackLayout
             {
                 Orientation = StackOrientation.Horizontal,
                 HorizontalOptions = LayoutOptions.Start
             };
+
+            ////Preview pics
+            //for (var i = 0; i < previewNumber; i++)
+            //{
+            //    var tempIcon = new CircleImage
+            //    {
+            //        HeightRequest = 50,
+            //        WidthRequest = 50,
+            //        Aspect = Aspect.AspectFill,
+            //        ClassId = i.ToString()
+            //    };
+
+            //    previewImagesLayout.Children.Add(tempIcon);
+            //}
 
             grid.Children.Add(previewImagesLayout, 0, 1);
 
