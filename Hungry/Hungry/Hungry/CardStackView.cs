@@ -12,6 +12,8 @@
 using System;
 using Xamarin.Forms;
 using System.Collections.Generic;
+using System.Xml.Linq;
+using System.Net.Http;
 
 namespace Hungry
 {
@@ -21,7 +23,6 @@ namespace Hungry
 		{
 			public string Name { get; set;}
 			public string Photo { get; set;}
-            public string[] PreviewPhotos { get; set; }
 		};
 	
 	
@@ -46,22 +47,24 @@ namespace Hungry
 		// the last items index added to the stack of the cards
 		int itemIndex = 0;
 		bool ignoreTouch = false;
-		
-		// called when a card is swiped left/right with the card index in the ItemSource
-		public Action<int> SwipedRight = null;
+
+        private string url = "https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key={0}&text={1}&safe_search=1&per_page={2}&sort=relevance";
+        private HttpClient _client = new HttpClient();
+
+        // called when a card is swiped left/right with the card index in the ItemSource
+        public Action<int> SwipedRight = null;
 		public Action<int> SwipedLeft = null;
 
-		public static readonly BindableProperty ItemsSourceProperty =
-			BindableProperty.Create(nameof(ItemsSource), typeof(System.Collections.IList), typeof(CardStackView), null,
-    		propertyChanged: OnItemsSourcePropertyChanged);
-    
+        private List<Item> Items = new List<Item>();
 		public List<Item> ItemsSource {
 			get {
-				return (List<Item>)GetValue (ItemsSourceProperty);
+                return Items;
 			}
 			set {
-				SetValue (ItemsSourceProperty, value);
-				itemIndex = 0;			
+                if(Items != value)
+                {
+                    Items = value;
+                }		
 			}
 		}
 		
@@ -103,9 +106,42 @@ namespace Hungry
 			panGesture.PanUpdated += OnPanUpdated;
 			GestureRecognizers.Add (panGesture);
 
-		}
-		
-		void Setup()
+            loadImages("Pizza");
+
+        }
+
+        private async void loadImages(string foodType)
+        {
+
+            var formattedurl = string.Format(url, APIKeys.FLICKR_API_KEY, foodType, "10");
+
+            var content = await _client.GetStringAsync(formattedurl);
+
+            if (content != null)
+            {
+                var xdoc = XDocument.Parse(content);
+                foreach (var node in xdoc.Descendants("photos").Descendants("photo"))
+                {
+                    var id = node.Attribute("id").Value;
+                    var secretId = node.Attribute("secret").Value;
+                    var farmId = node.Attribute("farm").Value;
+                    var serverId = node.Attribute("server").Value;
+
+                    var imageURL = string.Format("https://farm{0}.staticflickr.com/{1}/{2}_{3}_z.jpg", farmId, serverId, id, secretId);
+                    var thumbImageURL = string.Format("https://farm{0}.staticflickr.com/{1}/{2}_{3}_s.jpg", farmId, serverId, id, secretId);
+
+                    Items.Add(new Item()
+                    {
+                        Name = foodType,
+                        Photo = imageURL
+                    });
+
+                }
+                Setup();
+            }
+        }
+
+        void Setup()
 		{
 			// set the top card
 			topCardIndex = 0;
