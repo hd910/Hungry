@@ -43,7 +43,7 @@ namespace Hungry
             //Preview Images
             grid.RowDefinitions.Add(new RowDefinition
             {
-                Height = new GridLength(50, GridUnitType.Absolute)
+                Height = new GridLength(1, GridUnitType.Auto)
             });
             //Description
             grid.RowDefinitions.Add(new RowDefinition

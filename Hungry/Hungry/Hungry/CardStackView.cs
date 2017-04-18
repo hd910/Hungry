@@ -14,6 +14,7 @@ using Xamarin.Forms;
 using System.Collections.Generic;
 using System.Xml.Linq;
 using System.Net.Http;
+using ImageCircle.Forms.Plugin.Abstractions;
 
 namespace Hungry
 {
@@ -160,7 +161,37 @@ namespace Hungry
 				if (itemIndex >= ItemsSource.Count) break;
 				var card = cards[i];
 				card.Name.Text = ItemsSource[itemIndex].Name;
-                if(ItemsSource[itemIndex].foodImages != null)
+
+                if(card.previewImagesLayout.Children.Count == 0)
+                {
+                    for (var index = 0; index < PreviewNumber; index++)
+                    {
+                        var tempIcon = new CircleImage
+                        {
+                            HeightRequest = 50,
+                            WidthRequest = 50,
+                            Aspect = Aspect.AspectFill,
+                            Source = UriImageSource.FromUri(new Uri(ItemsSource[itemIndex].foodImages[index].thumbnailUri)),
+                            ClassId = itemIndex.ToString() + "_" + index.ToString()
+                        };
+
+                        var tapGestureRecognizer = new TapGestureRecognizer();
+                        tapGestureRecognizer.Tapped += (sender, e) =>
+                        {
+                            var s = (CircleImage)sender;
+                            string[] temp = s.ClassId.Split('_');
+                            int orderIndex = Int32.Parse(temp[0]);
+                            int previewIndex = Int32.Parse(temp[1]);
+
+                            card.Photo.Source = ImageSource.FromUri(new Uri(ItemsSource[orderIndex].foodImages[previewIndex].fullSizeUri));
+                        };
+                        tempIcon.GestureRecognizers.Add(tapGestureRecognizer);
+
+                        card.previewImagesLayout.Children.Add(tempIcon);
+                    }
+                }
+                
+                if (ItemsSource[itemIndex].foodImages != null)
 				    card.Photo.Source = ImageSource.FromUri(new Uri(ItemsSource[itemIndex].foodImages[0].fullSizeUri));
 				card.IsVisible = true;
 				card.Scale = GetScale(i);
@@ -267,35 +298,66 @@ namespace Hungry
 		// show the next card
 		void ShowNextCard()
 		{
-			if (cards[0].IsVisible == false && cards[1].IsVisible == false) {
-				Setup();
-				return;
-			}
-			
-			var topCard = cards [topCardIndex];
-			topCardIndex = NextCardIndex (topCardIndex);
+            if (cards[0].IsVisible == false && cards[1].IsVisible == false)
+            {
+                Setup();
+                return;
+            }
 
-			// if there are more cards to show, show the next card in to place of 
-			// the card that was swipped off the screen
-			if (itemIndex < ItemsSource.Count) {
-				// push it to the back z order
-				((RelativeLayout)this.Content).LowerChild(topCard);
+            var topCard = cards[topCardIndex];
+            topCardIndex = NextCardIndex(topCardIndex);
 
-				// reset its scale, opacity and rotation
-				topCard.Scale = BackCardScale;
-				topCard.RotateTo(0, 0);
-				topCard.TranslateTo(0, -topCard.Y, 0);
+            // if there are more cards to show, show the next card in to place of 
+            // the card that was swipped off the screen
+            if (itemIndex < ItemsSource.Count)
+            {
+                // push it to the back z order
+                ((RelativeLayout)this.Content).LowerChild(topCard);
 
-				// set the data
-				topCard.Name.Text = ItemsSource[itemIndex].Name;
+                // reset its scale, opacity and rotation
+                topCard.Scale = BackCardScale;
+                topCard.RotateTo(0, 0);
+                topCard.TranslateTo(0, -topCard.Y, 0);
+
+                // set the data
+                topCard.Name.Text = ItemsSource[itemIndex].Name;
+                topCard.previewImagesLayout.Children.Clear();
+
+                for (var index = 0; index < PreviewNumber; index++)
+                {
+                    var tempIcon = new CircleImage
+                    {
+                        HeightRequest = 50,
+                        WidthRequest = 50,
+                        Aspect = Aspect.AspectFill,
+                        Source = UriImageSource.FromUri(new Uri(ItemsSource[itemIndex].foodImages[index].thumbnailUri)),
+                        ClassId = itemIndex.ToString() + "_" + index.ToString()
+                    };
+
+                    var tapGestureRecognizer = new TapGestureRecognizer();
+                    tapGestureRecognizer.Tapped += (sender, e) =>
+                    {
+                        var s = (CircleImage)sender;
+                        string[] temp = s.ClassId.Split('_');
+                        int orderIndex = Int32.Parse(temp[0]);
+                        int previewIndex = Int32.Parse(temp[1]);
+
+                        topCard.Photo.Source = ImageSource.FromUri(new Uri(ItemsSource[orderIndex].foodImages[previewIndex].fullSizeUri));
+                    };
+                    tempIcon.GestureRecognizers.Add(tapGestureRecognizer);
+
+                    topCard.previewImagesLayout.Children.Add(tempIcon);
+                }
+
+
                 //topCard.previewImagesLayout = 
                 if (ItemsSource[itemIndex].foodImages != null)
                     topCard.Photo.Source = ImageSource.FromUri(new Uri(ItemsSource[itemIndex].foodImages[0].fullSizeUri));
 
-				topCard.IsVisible = true;
-				itemIndex++;
-			}
-		}
+                topCard.IsVisible = true;
+                itemIndex++;
+            }
+        }
 
 		// return the next card index from the top
 		int NextCardIndex(int topIndex)
