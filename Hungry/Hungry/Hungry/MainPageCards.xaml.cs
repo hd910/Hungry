@@ -6,12 +6,9 @@ namespace Hungry
     public partial class MainPageCards : ContentPage
     {
         CardStackView cardStack;
-        MainPageViewModel viewModel = new MainPageViewModel();
 
         public MainPageCards()
         {
-
-            this.BindingContext = viewModel;
             this.BackgroundColor = Color.FromHex("#FFFFFF");
 
             RelativeLayout view = new RelativeLayout();

@@ -48,7 +48,6 @@
     <Compile Include="MainPageCards.xaml.cs">
       <DependentUpon>MainPageCards.xaml</DependentUpon>
     </Compile>
-    <Compile Include="MainPageViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
