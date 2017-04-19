@@ -58,6 +58,7 @@ namespace Hungry
 		// the last items index added to the stack of the cards
 		int itemIndex = 0;
 		bool ignoreTouch = false;
+        StackLayout frontLoadingLayout;
 
         private string url = "https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key={0}&text={1}&safe_search=1&per_page={2}&sort=relevance";
         private HttpClient _client = new HttpClient();
@@ -79,14 +80,16 @@ namespace Hungry
 			}
 		}
 
-		public CardStackView ()
+		public CardStackView (StackLayout loadingLayout)
 		{
             Random rnd = new Random();
             foodTypes = foodTypes.OrderBy(x => rnd.Next()).ToArray();
             RelativeLayout view = new RelativeLayout ();
 
-			// create a stack of cards
-			for (int i = 0; i < NumCards; i++) {
+            frontLoadingLayout = loadingLayout;
+
+            // create a stack of cards
+            for (int i = 0; i < NumCards; i++) {
 				var card = new CardView();
 				cards[i] = card;
 				card.InputTransparent = true;
@@ -158,6 +161,8 @@ namespace Hungry
                 }
             }
             Setup();
+
+            frontLoadingLayout.Children.Clear();
         }
 
         void Setup()
