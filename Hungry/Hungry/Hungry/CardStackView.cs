@@ -214,9 +214,11 @@ namespace Hungry
                 if (ItemsSource[itemIndex].foodImages != null)
 				    card.Photo.Source = ImageSource.FromUri(new Uri(ItemsSource[itemIndex].foodImages[0].fullSizeUri));
                 card.searchFoodButton.Text = "Find " + ItemsSource[itemIndex].Name;
-                card.searchFoodButton.Clicked += delegate
+                card.searchFoodButton.ClassId = ItemsSource[itemIndex].Name;
+                card.searchFoodButton.Clicked += (sender, EventArgs) => 
                 {
-                    Device.OpenUri(new Uri(string.Format(yelpUrl, ItemsSource[itemIndex].Name)));
+                    Button clickedButton = (Button)sender;
+                    Device.OpenUri(new Uri(string.Format(yelpUrl, clickedButton.ClassId)));
                 };
 
                 card.IsVisible = true;
