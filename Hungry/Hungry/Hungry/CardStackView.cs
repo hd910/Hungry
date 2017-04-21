@@ -33,7 +33,9 @@ namespace Hungry
             public string thumbnailUri { get; set; }
         }
 
-        string[] foodTypes = new string[14] { "Pizza", "Hamburger", "Sushi", "Pasta", "Bibimbap", "Pho", "Udon Noodles", "Donkatsu", "Salad", "Sandwich", "Burrito", "Fried Rice", "Pad Thai", "Dumpling" };
+        string[] foodTypes = new string[22] { "Pizza", "Hamburger", "Sushi", "Pasta", "Bibimbap", "Pho",
+            "Udon Noodles", "Donkatsu", "Salad", "Sandwich", "Burrito", "Fried Rice", "Pad Thai", "Dumpling",
+            "lasagna","Chicken Cutlet","Beef Steak","Sweet and Sour Pork","Mapu Tofu","Kimchi Soup","Sashimi","Hotdog"};
 
         // back card scale
         const float BackCardScale = 0.8f;
@@ -62,6 +64,7 @@ namespace Hungry
 
         private string url = "https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key={0}&text={1}&safe_search=1&per_page={2}&sort=relevance";
         private HttpClient _client = new HttpClient();
+        private string yelpUrl = "https://www.yelp.com/search?find_desc={0}&ns=1";
 
         // called when a card is swiped left/right with the card index in the ItemSource
         public Action<int> SwipedRight = null;
@@ -84,6 +87,7 @@ namespace Hungry
 		{
             Random rnd = new Random();
             foodTypes = foodTypes.OrderBy(x => rnd.Next()).ToArray();
+
             RelativeLayout view = new RelativeLayout ();
 
             frontLoadingLayout = loadingLayout;
@@ -128,7 +132,8 @@ namespace Hungry
 
         private async void loadImages()
         {
-            foreach(var foodType in foodTypes){
+            for (var i = 0; i < foodTypes.Length; i++){
+                var foodType = foodTypes[i];
                 var formattedurl = string.Format(url, APIKeys.FLICKR_API_KEY, foodType, PreviewNumber);
 
                 var content = await _client.GetStringAsync(formattedurl);
@@ -209,6 +214,10 @@ namespace Hungry
                 if (ItemsSource[itemIndex].foodImages != null)
 				    card.Photo.Source = ImageSource.FromUri(new Uri(ItemsSource[itemIndex].foodImages[0].fullSizeUri));
                 card.searchFoodButton.Text = "Find " + ItemsSource[itemIndex].Name;
+                card.searchFoodButton.Clicked += delegate
+                {
+                    Device.OpenUri(new Uri(string.Format(yelpUrl, ItemsSource[itemIndex].Name)));
+                };
 
                 card.IsVisible = true;
 				card.Scale = GetScale(i);
