@@ -70,7 +70,8 @@ namespace Hungry
             Image leftArrow = new Image()
             {
                 WidthRequest = 100,
-                Source = ImageSource.FromResource("Hungry.Images.arrow-left.png")
+                Source = ImageSource.FromResource("Hungry.Images.arrow-left.png"),
+                Opacity = 0.5
             };
             swipeMessageLayout.Children.Add(leftArrow);
 
@@ -88,7 +89,8 @@ namespace Hungry
             Image rightArrow = new Image()
             {
                 WidthRequest = 100,
-                Source = ImageSource.FromResource("Hungry.Images.arrow-right.png")
+                Source = ImageSource.FromResource("Hungry.Images.arrow-right.png"),
+                Opacity = 0.5
             };
             swipeMessageLayout.Children.Add(rightArrow);
 
