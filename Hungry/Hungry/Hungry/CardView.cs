@@ -128,9 +128,9 @@ namespace Hungry
             searchFoodButton = new Button
             {
                 Text = "I WANT... FOOD",
-                BackgroundColor = Color.FromHex("#f00c0c"),
+                BackgroundColor = Color.FromHex("#f12907"),
                 TextColor = Color.FromHex("FFFFFF"),
-                BorderRadius = 20,
+                BorderRadius = 90,
                 FontSize = 22
             };
 
