@@ -15,7 +15,7 @@ namespace Hungry
         public CardView()
         {
             RelativeLayout view = new RelativeLayout {
-                Padding = 10
+                
             };
 
             //Background box
@@ -34,7 +34,8 @@ namespace Hungry
             );
 
             Grid grid = new Grid {
-                RowSpacing = 10
+                RowSpacing = 10,
+                Padding = new Thickness(10, 10, 10, 10)
             };
             //Description
             grid.RowDefinitions.Add(new RowDefinition
@@ -60,17 +61,38 @@ namespace Hungry
 
             AbsoluteLayout absoluteLayout = new AbsoluteLayout();
 
-            //Food name
+            StackLayout swipeMessageLayout = new StackLayout()
+            {
+                Orientation = StackOrientation.Horizontal,
+                HorizontalOptions = LayoutOptions.Center,
+                VerticalOptions = LayoutOptions.Center
+            };
+            Image leftArrow = new Image()
+            {
+                WidthRequest = 100,
+                Source = ImageSource.FromResource("Hungry.Images.arrow-left.png")
+            };
+            swipeMessageLayout.Children.Add(leftArrow);
+
+            //Swipe label
             Name = new Label()
             {
-                TextColor = Color.Black,
-                FontSize = 18,
-                InputTransparent = true,
-                HorizontalTextAlignment = TextAlignment.Center,
-                VerticalTextAlignment = TextAlignment.Center
+                TextColor = Color.LightGray,
+                Text = "Swipe to skip",
+                FontSize = 16,
+                InputTransparent = true
             };
 
-            grid.Children.Add(Name, 0, 0);
+            swipeMessageLayout.Children.Add(Name);
+
+            Image rightArrow = new Image()
+            {
+                WidthRequest = 100,
+                Source = ImageSource.FromResource("Hungry.Images.arrow-right.png")
+            };
+            swipeMessageLayout.Children.Add(rightArrow);
+
+            grid.Children.Add(swipeMessageLayout, 0, 0);
 
             //Main food image
             Photo = new Image()

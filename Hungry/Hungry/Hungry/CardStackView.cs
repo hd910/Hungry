@@ -173,7 +173,7 @@ namespace Hungry
 			for (int i = 0; i < Math.Min(NumCards, ItemsSource.Count); i++)	{
 				if (itemIndex >= ItemsSource.Count) break;
 				var card = cards[i];
-				card.Name.Text = "Hungry? How about " + ItemsSource[itemIndex].Name;
+				//card.Name.Text = "Hungry? How about " + ItemsSource[itemIndex].Name;
 
                 if(card.previewImagesLayout.Children.Count == 0)
                 {
@@ -342,7 +342,7 @@ namespace Hungry
                 topCard.TranslateTo(0, -topCard.Y, 0);
 
                 // set the data
-                topCard.Name.Text = "Hungry? How about.. " + ItemsSource[itemIndex].Name;
+                //topCard.Name.Text = "Hungry? How about.. " + ItemsSource[itemIndex].Name;
                 topCard.previewImagesLayout.Children.Clear();
 
                 for (var index = 0; index < PreviewNumber; index++)
