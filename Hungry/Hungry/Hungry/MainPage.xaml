@@ -1,32 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:local="clr-namespace:Hungry"
-             xmlns:ic="clr-namespace:ImageCircle.Forms.Plugin.Abstractions;assembly=ImageCircle.Forms.Plugin.Abstractions"
-             x:Class="Hungry.MainPage"
-             Padding="10">
-    <Grid RowSpacing="10">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="20"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="50"/>
-            <RowDefinition Height="40"/>
-            <RowDefinition Height="60"/>
-        </Grid.RowDefinitions>
-        <Label Grid.Row="0" Text="Swipe to Skip" 
-           HorizontalOptions="Center" />
-        <AbsoluteLayout Grid.Row="1">
-            <ActivityIndicator x:Name="mainImageLoading"
-                               AbsoluteLayout.LayoutBounds="0.5,0.5,1,0.2" AbsoluteLayout.LayoutFlags="All"/>
-            <Image x:Name="mainImage" Source="" Aspect="AspectFill" AbsoluteLayout.LayoutBounds="0,0,1,1" AbsoluteLayout.LayoutFlags="All"/>
-        </AbsoluteLayout>
-        <StackLayout Grid.Row="2" HorizontalOptions="Start" Orientation="Horizontal" x:Name="previewImagesLayout"/>
-        <StackLayout Grid.Row="3" HorizontalOptions="Start" Orientation="Horizontal">
-            <Label Grid.Row="3" x:Name="catagoryLabel" Text="Beef and Bacon Hamburger" FontSize="Medium"/>
-            <Button Text="Next" Clicked="NextFood"/>
-        </StackLayout>
-        
-        <Button Grid.Row="4" x:Name="mainButton" Text="I want... HAMBURGER" BackgroundColor="#f00c0c" TextColor="White" BorderRadius="20" FontSize="Medium" />
-    </Grid>
-	
+             x:Class="Hungry.MainPage">
 </ContentPage>

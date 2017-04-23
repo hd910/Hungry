@@ -13,7 +13,7 @@ namespace Hungry
         {
             InitializeComponent();
 
-            MainPage = new Hungry.MainPageCards();
+            MainPage = new MainPage();
         }
 
         protected override void OnStart()
