@@ -111,9 +111,6 @@ namespace Hungry
 					})
 				);
 			}
-            //ActivityIndicator loadingIcon = new ActivityIndicator();
-            //view.Children.Add(loadingIcon, widthConstraint: Constraint.RelativeToParent(parent => parent.Width),
-            //    heightConstraint: Constraint.RelativeToParent(parent => parent.Width));
 
             this.BackgroundColor = Color.White;
 			this.Content = view;
