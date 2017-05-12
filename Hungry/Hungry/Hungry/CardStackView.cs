@@ -1,11 +1,21 @@
-﻿using System;
+﻿//
+//  Copyright (c) 2016 MatchboxMobile
+//  Licensed under The MIT License (MIT)
+//  http://opensource.org/licenses/MIT
+//
+//  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
+//  TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+//  THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
+//  CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
+//  IN THE SOFTWARE.
+//
+using System;
 using Xamarin.Forms;
 using System.Collections.Generic;
 using System.Xml.Linq;
 using System.Net.Http;
 using ImageCircle.Forms.Plugin.Abstractions;
 using System.Linq;
-using SQLite;
 
 namespace Hungry
 {
@@ -13,16 +23,12 @@ namespace Hungry
 	{
         public class Item
         {
-            
             public string Name { get; set; }
             public List<FoodImage> foodImages { get; set; }
         }
 
         public class FoodImage
         {
-            [PrimaryKey, AutoIncrement]
-            public int Id { get; set; }
-            public string Name { get; set; }
             public string fullSizeUri { get; set; }
             public string thumbnailUri { get; set; }
         }
@@ -59,8 +65,6 @@ namespace Hungry
         private string url = "https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key={0}&text={1}&safe_search=1&per_page={2}&sort=relevance";
         private HttpClient _client = new HttpClient();
         private string yelpUrl = "https://www.yelp.com/search?find_desc={0}&ns=1";
-        private SQLiteAsyncConnection connection;
-        private bool refreshTable = true;
 
         // called when a card is swiped left/right with the card index in the ItemSource
         public Action<int> SwipedRight = null;
@@ -83,8 +87,6 @@ namespace Hungry
 		{
             Random rnd = new Random();
             foodTypes = foodTypes.OrderBy(x => rnd.Next()).ToArray();
-
-            getImageURI();
 
             RelativeLayout view = new RelativeLayout ();
 
@@ -121,69 +123,45 @@ namespace Hungry
 			panGesture.PanUpdated += OnPanUpdated;
 			GestureRecognizers.Add (panGesture);
 
-            
-
-        }
-
-        private async void getImageURI()
-        {
-            connection = DependencyService.Get<ISQLiteDb>().GetConnection();
-            await connection.CreateTableAsync<FoodImage>();
-
-            //var foodImageURI = connection.Table<FoodURI>().ToListAsync();
-
-            //var foodURI = new FoodURI { Name = "TEST", Uri = "www.google.com" };
-            //await connection.InsertAsync(foodURI);
             loadImages();
+
         }
 
         private async void loadImages()
         {
-            List<FoodImage> foodItems = await connection.Table<FoodImage>().ToListAsync();
-            if (foodItems == null || foodItems.Count == 0 || refreshTable)
-            {
-                for (var i = 0; i < foodTypes.Length; i++)
+            for (var i = 0; i < foodTypes.Length; i++){
+                var foodType = foodTypes[i];
+                var formattedurl = string.Format(url, APIKeys.FLICKR_API_KEY, foodType, PreviewNumber);
+
+                var content = await _client.GetStringAsync(formattedurl);
+
+                if (content != null)
                 {
-                    var foodType = foodTypes[i];
-                    var formattedurl = string.Format(url, APIKeys.FLICKR_API_KEY, foodType, PreviewNumber);
-
-                    var content = await _client.GetStringAsync(formattedurl);
-
-                    if (content != null)
+                    var xdoc = XDocument.Parse(content);
+                    List<FoodImage> tempImages = new List<FoodImage>();
+                    foreach (var node in xdoc.Descendants("photos").Descendants("photo"))
                     {
-                        var xdoc = XDocument.Parse(content);
-                        List<FoodImage> tempImages = new List<FoodImage>();
-                        foreach (var node in xdoc.Descendants("photos").Descendants("photo"))
-                        {
-                            var id = node.Attribute("id").Value;
-                            var secretId = node.Attribute("secret").Value;
-                            var farmId = node.Attribute("farm").Value;
-                            var serverId = node.Attribute("server").Value;
+                        var id = node.Attribute("id").Value;
+                        var secretId = node.Attribute("secret").Value;
+                        var farmId = node.Attribute("farm").Value;
+                        var serverId = node.Attribute("server").Value;
 
-                            var imageURL = string.Format("https://farm{0}.staticflickr.com/{1}/{2}_{3}_z.jpg", farmId, serverId, id, secretId);
-                            var thumbImageURL = string.Format("https://farm{0}.staticflickr.com/{1}/{2}_{3}_s.jpg", farmId, serverId, id, secretId);
+                        var imageURL = string.Format("https://farm{0}.staticflickr.com/{1}/{2}_{3}_z.jpg", farmId, serverId, id, secretId);
+                        var thumbImageURL = string.Format("https://farm{0}.staticflickr.com/{1}/{2}_{3}_s.jpg", farmId, serverId, id, secretId);
 
-                            tempImages.Add(new FoodImage()
-                            {
-                                Name = foodType,
-                                fullSizeUri = imageURL,
-                                thumbnailUri = thumbImageURL
-                            });
-                        }
-                        await connection.InsertAllAsync(tempImages);
-                        Items.Add(new Item()
+                        tempImages.Add(new FoodImage()
                         {
-                            Name = foodType,
-                            foodImages = tempImages
+                            fullSizeUri = imageURL,
+                            thumbnailUri = thumbImageURL
                         });
                     }
+                    Items.Add(new Item()
+                    {
+                        Name = foodType,
+                        foodImages = tempImages
+                    });
                 }
             }
-            else
-            {
-
-            }
-            
             Setup();
 
             frontLoadingLayout.Children.Clear();
