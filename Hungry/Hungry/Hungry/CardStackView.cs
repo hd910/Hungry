@@ -44,7 +44,7 @@ namespace Hungry
 		// distance a card must be moved to consider to be swiped off
 		public int CardMoveDistance {get; set;}
 
-        const int PreviewNumber = 5;
+        const int PreviewNumber = 6;
 
 		// two cards
 		const int NumCards = 2;
@@ -213,7 +213,12 @@ namespace Hungry
                 }
                 
                 if (ItemsSource[itemIndex].foodImages != null)
-				    card.Photo.Source = ImageSource.FromUri(new Uri(ItemsSource[itemIndex].foodImages[0].fullSizeUri));
+                {
+                    Random rnd = new Random();
+                    int thumbCount = ItemsSource[itemIndex].foodImages.Count;
+                    card.Photo.Source = ImageSource.FromUri(new Uri(ItemsSource[itemIndex].foodImages[rnd.Next(0, thumbCount)].fullSizeUri));
+
+                }
                 card.searchFoodButton.Text = "Find " + ItemsSource[itemIndex].Name;
                 card.searchFoodButton.Clicked += (sender, EventArgs) => 
                 {
@@ -386,7 +391,12 @@ namespace Hungry
                 }
 
                 if (ItemsSource[itemIndex].foodImages != null)
-                    topCard.Photo.Source = ImageSource.FromUri(new Uri(ItemsSource[itemIndex].foodImages[0].fullSizeUri));
+                {
+                    Random rnd = new Random();
+                    int thumbCount = ItemsSource[itemIndex].foodImages.Count;
+                    topCard.Photo.Source = ImageSource.FromUri(new Uri(ItemsSource[itemIndex].foodImages[rnd.Next(0, thumbCount)].fullSizeUri));
+                }
+                    
 
                 topCard.searchFoodButton.Text = "Find " + ItemsSource[itemIndex].Name;
 
