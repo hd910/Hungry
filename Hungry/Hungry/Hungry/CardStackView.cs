@@ -129,42 +129,47 @@ namespace Hungry
 
         private async void loadImages()
         {
-            for (var i = 0; i < foodTypes.Length; i++){
-                var foodType = foodTypes[i];
-                var formattedurl = string.Format(url, APIKeys.FLICKR_API_KEY, foodType, PreviewNumber);
-
-                var content = await _client.GetStringAsync(formattedurl);
-
-                if (content != null)
+            var url = "http://hungrydata.azurewebsites.net/foodURLList.txt";
+            var content = await _client.GetStringAsync(url);
+            if (content != null)
+            {
+                string[] contentArray = content.Split('\n');
+                int index = 0;
+                
+                //Loop through food types
+                while (index+1 < contentArray.Length)
                 {
-                    var xdoc = XDocument.Parse(content);
-                    List<FoodImage> tempImages = new List<FoodImage>();
-                    foreach (var node in xdoc.Descendants("photos").Descendants("photo"))
-                    {
-                        var id = node.Attribute("id").Value;
-                        var secretId = node.Attribute("secret").Value;
-                        var farmId = node.Attribute("farm").Value;
-                        var serverId = node.Attribute("server").Value;
 
-                        var imageURL = string.Format("https://farm{0}.staticflickr.com/{1}/{2}_{3}_z.jpg", farmId, serverId, id, secretId);
-                        var thumbImageURL = string.Format("https://farm{0}.staticflickr.com/{1}/{2}_{3}_s.jpg", farmId, serverId, id, secretId);
+                    List<FoodImage> tempImages = new List<FoodImage>();
+                    string name = contentArray[index];
+                    index++;
+                    int count = Int32.Parse(contentArray[index]);
+                    index++;
+
+                    //Loop through different images of same food
+                    for(var i = 0; i < count; i++)
+                    {
+                        string fullURL = contentArray[index];
+                        index++;
+                        string thumbURL = contentArray[index];
+                        index++;
 
                         tempImages.Add(new FoodImage()
                         {
-                            fullSizeUri = imageURL,
-                            thumbnailUri = thumbImageURL
+                            fullSizeUri = fullURL,
+                            thumbnailUri = thumbURL
                         });
                     }
                     Items.Add(new Item()
                     {
-                        Name = foodType,
+                        Name = name,
                         foodImages = tempImages
                     });
                 }
-            }
-            Setup();
+                Setup();
 
-            frontLoadingLayout.Children.Clear();
+                frontLoadingLayout.Children.Clear();
+            }
         }
 
         void Setup()
