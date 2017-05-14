@@ -33,10 +33,6 @@ namespace Hungry
             public string thumbnailUri { get; set; }
         }
 
-        string[] foodTypes = new string[22] { "Pizza", "Hamburger", "Sushi", "Pasta", "Bibimbap", "Pho",
-            "Udon Noodles", "Donkatsu", "Salad", "Sandwich", "Burrito", "Fried Rice", "Pad Thai", "Dumpling",
-            "lasagna","Chicken Cutlet","Beef Steak","Sweet and Sour Pork","Mapu Tofu","Kimchi Soup","Sashimi","Hotdog"};
-
         // back card scale
         const float BackCardScale = 0.8f;
 		// speed of the animations
@@ -85,8 +81,7 @@ namespace Hungry
 
 		public CardStackView (StackLayout loadingLayout)
 		{
-            Random rnd = new Random();
-            foodTypes = foodTypes.OrderBy(x => rnd.Next()).ToArray();
+            
 
             RelativeLayout view = new RelativeLayout ();
 
@@ -166,6 +161,10 @@ namespace Hungry
                         foodImages = tempImages
                     });
                 }
+
+                Random rnd = new Random();
+                Items = Items.OrderBy(x => rnd.Next()).ToList<Item>();
+
                 Setup();
 
                 frontLoadingLayout.Children.Clear();
