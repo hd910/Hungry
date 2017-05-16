@@ -37,6 +37,12 @@ namespace Hungry
                 RowSpacing = 10,
                 Padding = new Thickness(10, 10, 10, 10)
             };
+            //AdMob
+            grid.RowDefinitions.Add(new RowDefinition
+            {
+                Height = new GridLength(50, GridUnitType.Absolute)
+            });
+
             //Description
             grid.RowDefinitions.Add(new RowDefinition
             {
@@ -58,6 +64,13 @@ namespace Hungry
             {
                 Height = new GridLength(60, GridUnitType.Absolute)
             });
+
+            AdMobView admobView = new AdMobView()
+            {
+                WidthRequest = 320,
+                HeightRequest = 50
+            };
+            grid.Children.Add(admobView, 0, 0);
 
             AbsoluteLayout absoluteLayout = new AbsoluteLayout();
 
@@ -94,7 +107,7 @@ namespace Hungry
             };
             swipeMessageLayout.Children.Add(rightArrow);
 
-            grid.Children.Add(swipeMessageLayout, 0, 0);
+            grid.Children.Add(swipeMessageLayout, 0, 1);
 
             //Main food image
             Photo = new Image()
@@ -112,7 +125,7 @@ namespace Hungry
 
 
 
-            grid.Children.Add(absoluteLayout, 0, 1);
+            grid.Children.Add(absoluteLayout, 0, 2);
 
             previewImagesLayout = new StackLayout
             {
@@ -120,7 +133,7 @@ namespace Hungry
                 HorizontalOptions = LayoutOptions.Start
             };
 
-            grid.Children.Add(previewImagesLayout, 0, 2);
+            grid.Children.Add(previewImagesLayout, 0, 3);
 
             
 
@@ -134,7 +147,7 @@ namespace Hungry
                 FontSize = 22
             };
 
-            grid.Children.Add(searchFoodButton,0,3);
+            grid.Children.Add(searchFoodButton,0,4);
 
             view.Children.Add(grid,
                 Constraint.Constant(0), Constraint.Constant(0),

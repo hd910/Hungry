@@ -63,17 +63,19 @@ namespace Hungry
             //view.Children.Add(frontLoadingLayout, Constraint.RelativeToParent(parent => parent.Width * 0.33),
             //    Constraint.RelativeToParent(parent => parent.Height * 0.33));
             frontLoadingLayout.VerticalOptions = LayoutOptions.Center;
-            view.Children.Add(frontLoadingLayout,
-                Constraint.Constant(0),
-                Constraint.Constant(0),
-                Constraint.RelativeToParent((parent) =>
-                {
-                    return parent.Width;
-                }),
-                Constraint.RelativeToParent((parent) =>
-                {
-                    return parent.Height;
-                }));
+
+            //EDITED OUT BECAUSE IT DISABLES ADMOB
+            //view.Children.Add(frontLoadingLayout,
+            //    Constraint.Constant(0),
+            //    Constraint.Constant(0),
+            //    Constraint.RelativeToParent((parent) =>
+            //    {
+            //        return parent.Width;
+            //    }),
+            //    Constraint.RelativeToParent((parent) =>
+            //    {
+            //        return parent.Height;
+            //    }));
 
             this.Content = view;
         }
