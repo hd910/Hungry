@@ -143,7 +143,7 @@ namespace Hungry
                 Text = "I WANT... FOOD",
                 BackgroundColor = Color.FromHex("#f12907"),
                 TextColor = Color.FromHex("FFFFFF"),
-                BorderRadius = 90,
+                BorderRadius = 50,
                 FontSize = 22
             };
 
