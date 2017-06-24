@@ -39,7 +39,7 @@ namespace Hungry
             }
         }
 
-        public async Task<List<FoodModel>> GetHotDogInformation()
+        public async Task<List<FoodModel>> GetFoodList()
         {
             return await this.foodModelTable.ToListAsync();
         }

@@ -1,21 +1,12 @@
-﻿//
-//  Copyright (c) 2016 MatchboxMobile
-//  Licensed under The MIT License (MIT)
-//  http://opensource.org/licenses/MIT
-//
-//  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
-//  TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
-//  THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
-//  CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
-//  IN THE SOFTWARE.
-//
-using System;
+﻿using System;
 using Xamarin.Forms;
 using System.Collections.Generic;
 using System.Xml.Linq;
 using System.Net.Http;
 using ImageCircle.Forms.Plugin.Abstractions;
 using System.Linq;
+using Microsoft.WindowsAzure.MobileServices;
+using Hungry.Models;
 
 namespace Hungry
 {
@@ -61,6 +52,8 @@ namespace Hungry
         private string url = "https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key={0}&text={1}&safe_search=1&per_page={2}&sort=relevance";
         private HttpClient _client = new HttpClient();
         private string yelpUrl = "https://www.yelp.com/search?find_desc={0}&ns=1";
+        MobileServiceClient client = AzureManager.AzureManagerInstance.AzureClient;
+
 
         // called when a card is swiped left/right with the card index in the ItemSource
         public Action<int> SwipedRight = null;
@@ -125,6 +118,7 @@ namespace Hungry
         private async void loadImages()
         {
             var url = "http://hungrydata.azurewebsites.net/foodURLList.txt";
+            List<FoodModel> foodList = await AzureManager.AzureManagerInstance.GetFoodList();
             var content = await _client.GetStringAsync(url);
             if (content != null)
             {
