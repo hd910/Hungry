@@ -232,6 +232,22 @@ namespace Hungry
                     Device.OpenUri(new Uri(string.Format(yelpUrl, name)));
                 };
 
+                var count = Items.Count;
+                Random random = new Random();
+                string randomFood = Items[random.Next(0, count)].Name;
+
+                var randomTapGestureRecognizer = new TapGestureRecognizer();
+                randomTapGestureRecognizer.Tapped += async (sender, e) =>
+                {
+                    var answer = await Application.Current.MainPage.DisplayAlert("Can't Choose?", "Random Generator Says... Eat "+ randomFood, "Find Around Me", "Close");
+                    if (answer)
+                    {
+                        Device.OpenUri(new Uri(string.Format(yelpUrl, randomFood)));
+                    }
+                };
+
+                card.randomFoodButton.GestureRecognizers.Add(randomTapGestureRecognizer);
+
                 card.IsVisible = true;
 				card.Scale = GetScale(i);
 				card.RotateTo (0, 0);
