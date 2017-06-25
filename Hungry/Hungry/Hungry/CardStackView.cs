@@ -1,21 +1,12 @@
-﻿//
-//  Copyright (c) 2016 MatchboxMobile
-//  Licensed under The MIT License (MIT)
-//  http://opensource.org/licenses/MIT
-//
-//  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
-//  TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
-//  THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
-//  CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
-//  IN THE SOFTWARE.
-//
-using System;
+﻿using System;
 using Xamarin.Forms;
 using System.Collections.Generic;
 using System.Xml.Linq;
 using System.Net.Http;
 using ImageCircle.Forms.Plugin.Abstractions;
 using System.Linq;
+using Microsoft.WindowsAzure.MobileServices;
+using Hungry.Models;
 
 namespace Hungry
 {
@@ -61,6 +52,8 @@ namespace Hungry
         private string url = "https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key={0}&text={1}&safe_search=1&per_page={2}&sort=relevance";
         private HttpClient _client = new HttpClient();
         private string yelpUrl = "https://www.yelp.com/search?find_desc={0}&ns=1";
+        MobileServiceClient client = AzureManager.AzureManagerInstance.AzureClient;
+
 
         // called when a card is swiped left/right with the card index in the ItemSource
         public Action<int> SwipedRight = null;
@@ -124,37 +117,49 @@ namespace Hungry
 
         private async void loadImages()
         {
-            var url = "http://hungrydata.azurewebsites.net/foodURLList.txt";
-            var content = await _client.GetStringAsync(url);
-            if (content != null)
+            List<FoodModel> foodList = await AzureManager.AzureManagerInstance.GetFoodList();
+            if (foodList != null)
             {
-                string[] contentArray = content.Split('\n');
-                int index = 0;
                 
                 //Loop through food types
-                while (index+1 < contentArray.Length)
+                foreach(FoodModel foodItem in foodList)
                 {
 
                     List<FoodImage> tempImages = new List<FoodImage>();
-                    string name = contentArray[index];
-                    index++;
-                    int count = Int32.Parse(contentArray[index]);
-                    index++;
+                    string name = foodItem.Name;
 
-                    //Loop through different images of same food
-                    for(var i = 0; i < count; i++)
+                    tempImages.Add(new FoodImage()
                     {
-                        string fullURL = contentArray[index];
-                        index++;
-                        string thumbURL = contentArray[index];
-                        index++;
+                        fullSizeUri = foodItem.URL1,
+                        thumbnailUri = foodItem.URL1Thumb
+                    });
+                    tempImages.Add(new FoodImage()
+                    {
+                        fullSizeUri = foodItem.URL2,
+                        thumbnailUri = foodItem.URL2Thumb
+                    });
+                    tempImages.Add(new FoodImage()
+                    {
+                        fullSizeUri = foodItem.URL3,
+                        thumbnailUri = foodItem.URL3Thumb
+                    });
+                    tempImages.Add(new FoodImage()
+                    {
+                        fullSizeUri = foodItem.URL4,
+                        thumbnailUri = foodItem.URL4Thumb
+                    });
+                    tempImages.Add(new FoodImage()
+                    {
+                        fullSizeUri = foodItem.URL5,
+                        thumbnailUri = foodItem.URL5Thumb
+                    });
+                    tempImages.Add(new FoodImage()
+                    {
+                        fullSizeUri = foodItem.URL6,
+                        thumbnailUri = foodItem.URL6Thumb
+                    });
 
-                        tempImages.Add(new FoodImage()
-                        {
-                            fullSizeUri = fullURL,
-                            thumbnailUri = thumbURL
-                        });
-                    }
+
                     Items.Add(new Item()
                     {
                         Name = name,
@@ -226,6 +231,22 @@ namespace Hungry
                     string name = clickedButton.Text.Replace("Find ","");
                     Device.OpenUri(new Uri(string.Format(yelpUrl, name)));
                 };
+
+                var count = Items.Count;
+                Random random = new Random();
+                string randomFood = Items[random.Next(0, count)].Name;
+
+                var randomTapGestureRecognizer = new TapGestureRecognizer();
+                randomTapGestureRecognizer.Tapped += async (sender, e) =>
+                {
+                    var answer = await Application.Current.MainPage.DisplayAlert("Can't Choose?", "Random Generator Says... Eat "+ randomFood, "Find Around Me", "Close");
+                    if (answer)
+                    {
+                        Device.OpenUri(new Uri(string.Format(yelpUrl, randomFood)));
+                    }
+                };
+
+                card.randomFoodButton.GestureRecognizers.Add(randomTapGestureRecognizer);
 
                 card.IsVisible = true;
 				card.Scale = GetScale(i);

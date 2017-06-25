@@ -7,6 +7,7 @@ namespace Hungry
 	{
 		public Label Name { get; set;}
 		public Image Photo { get; set;}
+        public Image randomFoodButton;
         public Image[] PreviewPhotos { get; set; }
         public StackLayout previewImagesLayout;
         public Button searchFoodButton;
@@ -147,7 +148,31 @@ namespace Hungry
                 FontSize = 22
             };
 
-            grid.Children.Add(searchFoodButton,0,4);
+            //Button to choose random food
+            randomFoodButton = new Image
+            {
+                Source = ImageSource.FromResource("Hungry.Images.random-button.png"),
+                WidthRequest =80,
+                HeightRequest = 80
+            };
+
+
+            Grid buttonGroup = new Grid();
+
+            buttonGroup.ColumnDefinitions.Add(new ColumnDefinition
+            {
+                Width = new GridLength(1, GridUnitType.Star)
+            });
+
+            buttonGroup.ColumnDefinitions.Add(new ColumnDefinition
+            {
+                Width = new GridLength(80, GridUnitType.Absolute)
+            });
+
+            buttonGroup.Children.Add(searchFoodButton, 0, 0);
+            buttonGroup.Children.Add(randomFoodButton, 1, 0);
+
+            grid.Children.Add(buttonGroup, 0,4);
 
             view.Children.Add(grid,
                 Constraint.Constant(0), Constraint.Constant(0),
