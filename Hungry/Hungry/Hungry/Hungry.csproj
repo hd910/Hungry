@@ -40,12 +40,14 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="APIKeys.cs" />
+    <Compile Include="AzureManager.cs" />
     <Compile Include="CardStackView.cs" />
     <Compile Include="CardView.cs" />
     <Compile Include="Food.cs" />
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Models\FoodModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="test.xaml.cs">
       <DependentUpon>test.xaml</DependentUpon>

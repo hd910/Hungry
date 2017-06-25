@@ -117,38 +117,49 @@ namespace Hungry
 
         private async void loadImages()
         {
-            var url = "http://hungrydata.azurewebsites.net/foodURLList.txt";
             List<FoodModel> foodList = await AzureManager.AzureManagerInstance.GetFoodList();
-            var content = await _client.GetStringAsync(url);
-            if (content != null)
+            if (foodList != null)
             {
-                string[] contentArray = content.Split('\n');
-                int index = 0;
                 
                 //Loop through food types
-                while (index+1 < contentArray.Length)
+                foreach(FoodModel foodItem in foodList)
                 {
 
                     List<FoodImage> tempImages = new List<FoodImage>();
-                    string name = contentArray[index];
-                    index++;
-                    int count = Int32.Parse(contentArray[index]);
-                    index++;
+                    string name = foodItem.Name;
 
-                    //Loop through different images of same food
-                    for(var i = 0; i < count; i++)
+                    tempImages.Add(new FoodImage()
                     {
-                        string fullURL = contentArray[index];
-                        index++;
-                        string thumbURL = contentArray[index];
-                        index++;
+                        fullSizeUri = foodItem.URL1,
+                        thumbnailUri = foodItem.URL1Thumb
+                    });
+                    tempImages.Add(new FoodImage()
+                    {
+                        fullSizeUri = foodItem.URL2,
+                        thumbnailUri = foodItem.URL2Thumb
+                    });
+                    tempImages.Add(new FoodImage()
+                    {
+                        fullSizeUri = foodItem.URL3,
+                        thumbnailUri = foodItem.URL3Thumb
+                    });
+                    tempImages.Add(new FoodImage()
+                    {
+                        fullSizeUri = foodItem.URL4,
+                        thumbnailUri = foodItem.URL4Thumb
+                    });
+                    tempImages.Add(new FoodImage()
+                    {
+                        fullSizeUri = foodItem.URL5,
+                        thumbnailUri = foodItem.URL5Thumb
+                    });
+                    tempImages.Add(new FoodImage()
+                    {
+                        fullSizeUri = foodItem.URL6,
+                        thumbnailUri = foodItem.URL6Thumb
+                    });
 
-                        tempImages.Add(new FoodImage()
-                        {
-                            fullSizeUri = fullURL,
-                            thumbnailUri = thumbURL
-                        });
-                    }
+
                     Items.Add(new Item()
                     {
                         Name = name,
