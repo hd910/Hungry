@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Hungry.LoadingPage"
+             BackgroundColor="White"
+             NavigationPage.HasNavigationBar="false">
+    <StackLayout
+        VerticalOptions="Center"
+        HorizontalOptions="Center">
+        <Image x:Name="loadingImage" WidthRequest="100" HeightRequest="100" Aspect="AspectFit"></Image>
+        <ActivityIndicator WidthRequest="50" HeightRequest="50" Margin="0,100,0,0" IsRunning="True"/>
+    </StackLayout>
+</ContentPage>

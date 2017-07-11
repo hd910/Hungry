@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Hungry.Models
 {
-    class FoodModel
+    public class FoodModel
     {
         public string Id { get; set; }
 

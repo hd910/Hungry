@@ -13,7 +13,8 @@ namespace Hungry
         {
             InitializeComponent();
 
-            MainPage = new MainPage();
+            MainPage = new NavigationPage(new LoadingPage());
+            NavigationPage.SetHasNavigationBar(this, false);
         }
 
         protected override void OnStart()

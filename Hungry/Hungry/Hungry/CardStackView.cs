@@ -47,7 +47,6 @@ namespace Hungry
 		// the last items index added to the stack of the cards
 		int itemIndex = 0;
 		bool ignoreTouch = false;
-        StackLayout frontLoadingLayout;
 
         private string url = "https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key={0}&text={1}&safe_search=1&per_page={2}&sort=relevance";
         private HttpClient _client = new HttpClient();
@@ -72,13 +71,12 @@ namespace Hungry
 			}
 		}
 
-		public CardStackView (StackLayout loadingLayout)
+		public CardStackView (List<FoodModel> foodList)
 		{
             
 
             RelativeLayout view = new RelativeLayout ();
 
-            frontLoadingLayout = loadingLayout;
 
             // create a stack of cards
             for (int i = 0; i < NumCards; i++) {
@@ -111,13 +109,12 @@ namespace Hungry
 			panGesture.PanUpdated += OnPanUpdated;
 			GestureRecognizers.Add (panGesture);
 
-            loadImages();
+            loadImages(foodList);
 
         }
 
-        private async void loadImages()
+        private async void loadImages(List<FoodModel> foodList)
         {
-            List<FoodModel> foodList = await AzureManager.AzureManagerInstance.GetFoodList();
             if (foodList != null)
             {
                 
@@ -172,7 +169,6 @@ namespace Hungry
 
                 Setup();
 
-                frontLoadingLayout.Children.Clear();
             }
         }
 
