@@ -48,8 +48,6 @@ namespace Hungry
 		int itemIndex = 0;
 		bool ignoreTouch = false;
 
-        private string url = "https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key={0}&text={1}&safe_search=1&per_page={2}&sort=relevance";
-        private HttpClient _client = new HttpClient();
         private string yelpUrl = "https://www.yelp.com/search?find_desc={0}&ns=1";
         MobileServiceClient client = AzureManager.AzureManagerInstance.AzureClient;
 
@@ -74,9 +72,7 @@ namespace Hungry
 		public CardStackView (List<FoodModel> foodList)
 		{
 
-
             RelativeLayout view = new RelativeLayout ();
-
 
             // create a stack of cards
             for (int i = 0; i < NumCards; i++) {
@@ -113,7 +109,7 @@ namespace Hungry
 
         }
 
-        private async void loadImages(List<FoodModel> foodList)
+        private void loadImages(List<FoodModel> foodList)
         {
             if (foodList != null)
             {
