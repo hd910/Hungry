@@ -19,6 +19,7 @@ namespace Hungry
 
         public LoadingPage()
         {
+            NavigationPage.SetHasNavigationBar(this, false);
             InitializeComponent();
 
             Image loadingImage = this.FindByName<Image>("loadingImage");

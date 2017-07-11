@@ -11,10 +11,12 @@ namespace Hungry
     {
         public App()
         {
+            NavigationPage.SetHasNavigationBar(this, false);
             InitializeComponent();
 
             MainPage = new NavigationPage(new LoadingPage());
-            NavigationPage.SetHasNavigationBar(this, false);
+
+            
         }
 
         protected override void OnStart()

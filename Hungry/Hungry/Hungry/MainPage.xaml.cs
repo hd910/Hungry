@@ -13,6 +13,7 @@ namespace Hungry
 
         public MainPage(List<FoodModel> foodList)
         {
+            NavigationPage.SetHasNavigationBar(this, false);
             this.BackgroundColor = Color.FromHex("#FFFFFF");
 
             RelativeLayout view = new RelativeLayout();

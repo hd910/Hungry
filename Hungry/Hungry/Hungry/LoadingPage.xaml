@@ -3,7 +3,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Hungry.LoadingPage"
              BackgroundColor="White"
-             NavigationPage.HasNavigationBar="false">
+             NavigationPage.HasNavigationBar="false"
+             NavigationPage.HasBackButton="False">
     <StackLayout
         VerticalOptions="Center"
         HorizontalOptions="Center">

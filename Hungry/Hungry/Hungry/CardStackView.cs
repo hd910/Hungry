@@ -73,7 +73,7 @@ namespace Hungry
 
 		public CardStackView (List<FoodModel> foodList)
 		{
-            
+
 
             RelativeLayout view = new RelativeLayout ();
 
